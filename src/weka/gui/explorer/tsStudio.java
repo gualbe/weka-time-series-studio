@@ -3376,6 +3376,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
         if (listInstances.size() > 1) {
             modeloLista.removeAllElements();
+            modeloInputVaribales.removeAllElements();
             for (int i = 0; i < listInstances.size() - 1; i++) {
                 if (listInstances.get(i).numAttributes() > listInstances.get(i + 1).numAttributes()) {
                     numeroAtributos = listInstances.get(i).numAttributes();
@@ -3433,7 +3434,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 }
                 else{
                   modeloLista.addElement(listInstances.get(0).attribute(i).name());
-  
+                  modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
             }
         }
         }
@@ -3485,6 +3486,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
         if (listInstances.size() > 1) {
             modeloLista.removeAllElements();
+            modeloInputVaribales.removeAllElements();
             for (int i = 0; i < listInstances.size() - 1; i++) {
                 if (listInstances.get(i).numAttributes() > listInstances.get(i + 1).numAttributes()) {
                     numeroAtributos = listInstances.get(i).numAttributes();
@@ -3534,7 +3536,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 }
                 else{
                   modeloLista.addElement(listInstances.get(0).attribute(i).name());
-  
+                  modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
             }
         }
         }
@@ -4260,6 +4262,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 //System.out.println("Horizon: " + horizon.get(i));
             }
         }
+        
         prepositionalInstances = ts.nuevo(listInstances, mHorizon, horizon, lag * (-1), targets, timeFormatComboBox.getSelectedItem().toString(), listFeatures, variableComboFunctionFeature.getSelectedItem().toString(), nombreCustomFeature);
 
         //System.out.println("Numero instancias: " + listInstances.get(0).numInstances());

@@ -302,8 +302,15 @@ public class TimeSerie {
 
             }
             System.out.println("features--> "+features);
+            if(features.size() == 0){
+                System.out.println("features.size == "+features.size());
+                nombreCustomFeature.add("No existe");
+            }
+            else{
+                
             for (int i = 0; i < features.size(); i++) {
                 atts.add(new Attribute(nombreCustomFeature.get(i)));
+            }
             }
             //System.out.println("holi");
             listaPrepositionalInstances.add(new Instances(inst.get(m).relationName() + "_" + m, atts, 0));
@@ -329,7 +336,7 @@ public class TimeSerie {
                         //System.out.println("entra en la fecha");
                     } 
                     else if(listaPrepositionalInstances.get(m).attribute(j).name().trim().equals(nombreCustomFeature.get(contadorCustomFeature).trim())){
-                        //System.out.println("CUSTOM FEATURE");
+                        System.out.println("CUSTOM FEATURE");
                         vals[j] = cf.eval(features.get(contadorCustomFeature), i, inst, index.get(kFeature), m);
                         contadorCustomFeature++;
                         //System.out.println("contadorCustomFeature--> "+contadorCustomFeature);
@@ -341,6 +348,7 @@ public class TimeSerie {
                         
                 }
                     else  {
+                        //System.out.println("entra");
                         if (j < (att.size() * Math.abs(lag)) + 1) {
                             if (i + contadorLagged < 0) {
                                 vals[j] = Double.NaN;
