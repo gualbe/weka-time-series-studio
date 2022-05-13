@@ -3428,9 +3428,14 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         }
         else{
             for(int i = 0; i<listInstances.get(0).numAttributes();i++){
+                if(listInstances.get(0).attribute(i).isDate()){
+                    
+                }
+                else{
                   modeloLista.addElement(listInstances.get(0).attribute(i).name());
   
             }
+        }
         }
         variableComboFunctionFeature.setModel(new DefaultComboBoxModel());
         for (int i = 0; i < modeloInputVaribales.size(); i++) {
@@ -3479,6 +3484,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         listaInputVariables.setModel(modeloInputVaribales);
 
         if (listInstances.size() > 1) {
+            modeloLista.removeAllElements();
             for (int i = 0; i < listInstances.size() - 1; i++) {
                 if (listInstances.get(i).numAttributes() > listInstances.get(i + 1).numAttributes()) {
                     numeroAtributos = listInstances.get(i).numAttributes();
@@ -3520,6 +3526,17 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     }
                 }
             }
+        }
+        else{
+            for(int i = 0; i<listInstances.get(0).numAttributes();i++){
+                if(listInstances.get(0).attribute(i).isDate()){
+                    
+                }
+                else{
+                  modeloLista.addElement(listInstances.get(0).attribute(i).name());
+  
+            }
+        }
         }
         variableComboFunctionFeature.setModel(new DefaultComboBoxModel());
         for (int i = 0; i < modeloInputVaribales.size(); i++) {
