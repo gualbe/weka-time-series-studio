@@ -341,7 +341,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         timeFormatComboBox.setToolTipText("Formato en el que se mostrará la fecha de las series temporales.\n"
                 + "CUIDADO: Para que se muestre la gráfica correctamente, si la fecha tiene también hora, elegir"
                 + "algun formato con fecha y hora.");
-        
+
         selectAllVariFeatures.setToolTipText("Selecciona todos los valores de la lista");
         addButtonFeature.setToolTipText("Añade a la tabla de features las funciones lagged configuradas");
         addFunctionButtonFeature.setToolTipText("Añade a la formula la custom feature elegida");
@@ -352,20 +352,20 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         removeSelectButtonTablaFeature.setToolTipText("Elimina el valor seleccionado");
         saveButtonFeature.setToolTipText("Guarda la lista de features en un archivo local en disco");
         loadButtonFeature.setToolTipText("Carga una lista de features de un archivo local en disco");
-        
+
         //Algoritmos
         jButton1.setToolTipText("Elimina el valor seleccionado");
         jButton2.setToolTipText("Selecciona todos los valores de la tabla");
         saveAlgoBtn.setToolTipText("Guarda la lista de algoritmos en un archivo local");
         loadAlgoBtn.setToolTipText("Carga una lista de algoritmos de un archivo local");
-        
+
         //Validations
         absoluteRadioButton.setToolTipText("Modo de validación absoluta");
         relativeRadioButton.setToolTipText("Modo de validación relativa");
         fromToRadioButton.setToolTipText("Modo de validación de rango de fechas. From(desde)|To(hasta)");
         jRadioButton4.setToolTipText("El incremento del training es el valor introducido");
         jRadioButton5.setToolTipText("No hay variaciones en el training");
-        
+
         //Results
         runStopButton.setToolTipText("Comenzar la experimentación");
         numThreadsTextField.setToolTipText("Numero de hilos con los que ejecutar la experimentación");
@@ -383,8 +383,6 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         jButton11.setToolTipText("Guarda en formato .arff la tabla de metricas por horizonte");
         jButton12.setToolTipText("Guarda en formato .latex la tabla de metricas por horizonte");
         jButton13.setToolTipText("Manda la tabla de metricas por horizonte a la pestaña 'preprocess' de Weka");
-        
-        
 
     }
 
@@ -1494,6 +1492,11 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
     buttonGroupTrainingSize.add(fromToRadioButton);
     fromToRadioButton.setText("From:");
+    fromToRadioButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            fromToRadioButtonMouseClicked(evt);
+        }
+    });
 
     fromTSOriginCheckBox.setText("From time series origin");
 
@@ -2475,7 +2478,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         i++;
                     }
 
-                    formulaTextFeature.setText(functionComboFeature.getSelectedItem() + "(" + (indexes.get(m) + 1) + ",-" + shiftTextFeature.getText()+")");
+                    formulaTextFeature.setText(functionComboFeature.getSelectedItem() + "(" + (indexes.get(m) + 1) + ",-" + shiftTextFeature.getText() + ")");
                 }
                 functions.add(functionComboFeature.getSelectedItem());
             //falta case "shift"
@@ -3125,8 +3128,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
     }//GEN-LAST:event_absoluteRadioButtonMouseClicked
 
     private void relativeRadioButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_relativeRadioButtonMouseClicked
-        fromTSOriginCheckBox.setSelected(true);
-        jRadioButton4.setEnabled(false);
+
         experimentLabel.setText("<html><p style=\"width:100px\">" + "Name: " + newTextField.getText() + " Datasets: " + listInstances.size() + "<br> Features: " + listFeatures.size() + "<br>  Classifiers: " + listClassifier.size() + "<br>  Validation: " + "<br> Result: " + calculated + "</p></html>");
     }//GEN-LAST:event_relativeRadioButtonMouseClicked
 
@@ -3235,7 +3237,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         int numeroAtributos = 0;
         String aEquals;
         boolean repetido = false;
-        
+
         String initialDir = ExplorerDefaults.getInitialDirectory();
         ConverterFileChooser m_FileChooser = new ConverterFileChooser(new File(initialDir));
         Instances instances;
@@ -3249,8 +3251,8 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     addInstancesToDatasetList(instances, 1);
                     listInstances.add(instances);
                     radioButtonValue.setSelected(true);
-                listVariables.setModel(modeloLista);
-                listaInputVariables.setModel(modeloInputVaribales);
+                    listVariables.setModel(modeloLista);
+                    listaInputVariables.setModel(modeloInputVaribales);
                 } catch (Exception ex) {
                     java.util.logging.Logger.getLogger(tsStudio.class
                             .getName()).log(Level.SEVERE, null, ex);
@@ -3258,55 +3260,55 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             }
         }
         for (int i = 0; i < listInstances.size() - 1; i++) {
-                if (listInstances.get(i).numAttributes() > listInstances.get(i + 1).numAttributes()) {
-                    numeroAtributos = listInstances.get(i).numAttributes();
-                } else {
-                    numeroAtributos = listInstances.get(i + 1).numAttributes();
-                }
+            if (listInstances.get(i).numAttributes() > listInstances.get(i + 1).numAttributes()) {
+                numeroAtributos = listInstances.get(i).numAttributes();
+            } else {
+                numeroAtributos = listInstances.get(i + 1).numAttributes();
             }
-            System.out.println("Numero de atributos: " + numeroAtributos);
-            for (int i = 0; i < listInstances.get(0).numAttributes(); i++) {
-                if (listInstances.get(0).attribute(i).isDate() == true || listInstances.get(0).attribute(i).name().contains("FECHA")) {
-                    System.out.println("Es fecha");
-                } else {
-                    aEquals = listInstances.get(0).attribute(i).name();
+        }
+        System.out.println("Numero de atributos: " + numeroAtributos);
+        for (int i = 0; i < listInstances.get(0).numAttributes(); i++) {
+            if (listInstances.get(0).attribute(i).isDate() == true || listInstances.get(0).attribute(i).name().contains("FECHA")) {
+                System.out.println("Es fecha");
+            } else {
+                aEquals = listInstances.get(0).attribute(i).name();
 
-                    for (int j = 1; j < listInstances.size(); j++) {
-                        for (int k = 0; k < listInstances.get(j).numAttributes(); k++) {
-                            if (aEquals.equals(listInstances.get(j).attribute(k).name())) {
+                for (int j = 1; j < listInstances.size(); j++) {
+                    for (int k = 0; k < listInstances.get(j).numAttributes(); k++) {
+                        if (aEquals.equals(listInstances.get(j).attribute(k).name())) {
 
-                                if (attEquals.isEmpty()) {
+                            if (attEquals.isEmpty()) {
+                                attEquals.add(aEquals);
+                                modeloLista.addElement(attEquals.get(contador));
+                                modeloInputVaribales.addElement(attEquals.get(contador));
+                                contador++;
+                            } else {
+                                int c = 0;
+                                while (c < attEquals.size() && !repetido) {
+                                    if (attEquals.get(c) == aEquals) {
+                                        System.out.println("Repetido");
+                                        repetido = true;
+                                    } else {
+                                        c++;
+                                    }
+
+                                }
+                                if (!repetido) {
+                                    System.out.println("No repetido");
                                     attEquals.add(aEquals);
                                     modeloLista.addElement(attEquals.get(contador));
                                     modeloInputVaribales.addElement(attEquals.get(contador));
                                     contador++;
-                                } else {
-                                    int c = 0;
-                                    while (c < attEquals.size() && !repetido) {
-                                        if (attEquals.get(c) == aEquals) {
-                                            System.out.println("Repetido");
-                                            repetido = true;
-                                        } else {
-                                            c++;
-                                        }
-
-                                    }
-                                    if (!repetido) {
-                                        System.out.println("No repetido");
-                                        attEquals.add(aEquals);
-                                        modeloLista.addElement(attEquals.get(contador));
-                                        modeloInputVaribales.addElement(attEquals.get(contador));
-                                        contador++;
-                                    }
                                 }
-
                             }
+
                         }
                     }
-
                 }
+
             }
-        
+        }
+
         variableComboFunctionFeature.setModel(new DefaultComboBoxModel());
         for (int i = 0; i < modeloInputVaribales.size(); i++) {
             variableComboFunctionFeature.addItem(modeloInputVaribales.get(i).toString());
@@ -3343,7 +3345,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         if (end >= 0) {
             listVariFeatures.setSelectionInterval(start, end);
         }
-        */
+         */
     }//GEN-LAST:event_addFolderActionPerformed
 
     private void addFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileActionPerformed
@@ -3426,17 +3428,14 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
                 }
             }
-        }
-        else{
-            for(int i = 0; i<listInstances.get(0).numAttributes();i++){
-                if(listInstances.get(0).attribute(i).isDate()){
-                    
+        } else {
+            for (int i = 0; i < listInstances.get(0).numAttributes(); i++) {
+                if (listInstances.get(0).attribute(i).isDate() == true || listInstances.get(0).attribute(i).name().contains("FECHA")) {
+                } else {
+                    modeloLista.addElement(listInstances.get(0).attribute(i).name());
+                    modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
                 }
-                else{
-                  modeloLista.addElement(listInstances.get(0).attribute(i).name());
-                  modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
             }
-        }
         }
         variableComboFunctionFeature.setModel(new DefaultComboBoxModel());
         for (int i = 0; i < modeloInputVaribales.size(); i++) {
@@ -3528,17 +3527,16 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     }
                 }
             }
-        }
-        else{
-            for(int i = 0; i<listInstances.get(0).numAttributes();i++){
-                if(listInstances.get(0).attribute(i).isDate()){
-                    
+        } else {
+            for (int i = 0; i < listInstances.get(0).numAttributes(); i++) {
+                   if (listInstances.get(0).attribute(i).isDate() == true || listInstances.get(0).attribute(i).name().contains("FECHA")) {
+
+
+                } else {
+                    modeloLista.addElement(listInstances.get(0).attribute(i).name());
+                    modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
                 }
-                else{
-                  modeloLista.addElement(listInstances.get(0).attribute(i).name());
-                  modeloInputVaribales.addElement(listInstances.get(0).attribute(i).name());
             }
-        }
         }
         variableComboFunctionFeature.setModel(new DefaultComboBoxModel());
         for (int i = 0; i < modeloInputVaribales.size(); i++) {
@@ -3679,24 +3677,23 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 }
             }
             try {
-                
 
                 File file = (fileChooser.getSelectedFile());
-                fw = new FileWriter(fileChooser.getSelectedFile() +"/" + nombreProyecto+"/Variables");
+                fw = new FileWriter(fileChooser.getSelectedFile() + "/" + nombreProyecto + "/Variables");
                 for (int i = 0; i < listVariables.getModel().getSize(); i++) {
                     fw.write((String) listVariables.getModel().getElementAt(i));
                     fw.write("\n");
                 }
                 fw.close();
 
-                fw = new FileWriter(fileChooser.getSelectedFile() +"/"+nombreProyecto+ "/Input Variables");
+                fw = new FileWriter(fileChooser.getSelectedFile() + "/" + nombreProyecto + "/Input Variables");
                 for (int i = 0; i < listaInputVariables.getModel().getSize(); i++) {
                     fw.write((String) listaInputVariables.getModel().getElementAt(i));
                     fw.write("\n");
                 }
                 fw.close();
 
-                fw = new FileWriter(fileChooser.getSelectedFile() +"/"+nombreProyecto+ "/Targets");
+                fw = new FileWriter(fileChooser.getSelectedFile() + "/" + nombreProyecto + "/Targets");
                 for (int i = 0; i < tablaTarget.getRowCount(); i++) //realiza un barrido por filas.
                 {
                     for (int j = 0; j < tablaTarget.getColumnCount(); j++) //realiza un barrido por columnas.
@@ -3710,7 +3707,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     fw.write("\n");
                 }
                 fw.close();
-                fw = new FileWriter(fileChooser.getSelectedFile() +"/"+nombreProyecto+ "/Scan Step");
+                fw = new FileWriter(fileChooser.getSelectedFile() + "/" + nombreProyecto + "/Scan Step");
 
                 if (radioButtonMaximum.isSelected()) {
                     System.out.println("Maximum--> " + radioButtonMaximum.getText());
@@ -3746,7 +3743,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 
             try {
-                
+
                 File folder = new File(m_FileChooser.getSelectedFile() + "/Datasets");
                 for (File file : folder.listFiles()) {
                     if (file.isDirectory()) {
@@ -3761,9 +3758,9 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                             radioButtonValue.setSelected(true);
                             listVariables.setModel(modeloLista);
                             listaInputVariables.setModel(modeloInputVaribales);
-                            
+
                         } catch (Exception ex) {
-                            
+
                         }
                     }
                 }
@@ -3771,11 +3768,11 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 try {
                     BufferedReader obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Features"));
                     String strng;
-                    
+
                     while ((strng = obj.readLine()) != null) {
                         System.out.println(strng);
                         if (strng.contains("lagged")) {
-                            
+
                         } else {
                             listFeatures.add(strng.replaceAll("/", ","));
                         }
@@ -3783,7 +3780,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         String part1 = parts[0];
                         String part2 = parts[1];
                         tablaFeatureModel.addRow(new Object[]{part1, part2});
-                        
+
                     }
 
                 } catch (IOException ex) {
@@ -3796,7 +3793,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     Classifier classifier = null;
                     m_log.statusMessage("Loading model from file...");
                     is = new FileInputStream(selected);
-                    
+
                     if (selected.getName().endsWith(PMML_FILE_EXTENSION)) {
                         PMMLModel model = PMMLFactory.getPMMLModel(is, m_log);
                         if (model instanceof PMMLClassifier) {
@@ -3804,7 +3801,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                             /*
                             * trainHeader = ((PMMLClassifier)classifier).getMiningSchema().
                             * getMiningSchemaAsInstances();
-                            */
+                             */
                         } else {
                             throw new Exception(
                                     "PMML model is not a classification/regression model!");
@@ -3825,7 +3822,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                             }
                         }
                         objectInputStream.close();
-                        
+
                         //System.out.println(listClassifier);
                         /*Classifier cl;
                         String initialDir = ExplorerDefaults.getInitialDirectory();
@@ -3850,7 +3847,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         }
-                        */
+                         */
                     }
                 } catch (FileNotFoundException ex) {
                     java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
@@ -3863,12 +3860,12 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
+
                 for (int i = 0; i < listClassifier.size(); i++) {
                     tablaAlgoritmosModel.addRow(new Object[]{(getSpec(listClassifier.get(i)))});
                 }
                 experimentLabel.setText("<html><p style=\"width:100px\">" + "Current experiment: " + "Name: " + newTextField.getText() + " Datasets: " + listInstances.size() + "</br> Features: " + listFeatures.size() + " Classifiers: " + listClassifier.size() + " Validation: none Result: " + calculated + "</p></html>");
-                
+
                 //RESULTS
                 folder = new File(m_FileChooser.getSelectedFile() + "/Results");
                 for (File file : folder.listFiles()) {
@@ -3881,7 +3878,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                             for (int i = 0; i < instances.numInstances(); i++) {
                                 if (instances.get(i).toString(5).equals("?") || instances.get(i).toString(6).equals("?") || instances.get(i).toString(7).equals("?")) {
                                     predictionTableModel.addRow(new Object[]{instances.get(i).toString(0), instances.get(i).toString(1), instances.get(i).toString(2), instances.get(i).toString(3), instances.get(i).toString(4), (Double.NaN), Double.NaN, Double.NaN});
-                                    
+
                                 } else {
                                     predictionTableModel.addRow(new Object[]{instances.get(i).toString(0), instances.get(i).toString(1), instances.get(i).toString(2), instances.get(i).toString(3), instances.get(i).toString(4), Double.parseDouble(instances.get(i).toString(5)), Double.parseDouble(instances.get(i).toString(6)), Double.parseDouble(instances.get(i).toString(7))});
                                 }
@@ -3890,7 +3887,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         } catch (Exception ex) {
                             java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        
+
                     } else if (file.getName().equals("Overall Metrics.arff")) {
                         try {
                             instances = ConverterUtils.DataSource.read(file.toString());
@@ -3901,34 +3898,34 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                                         overallMetricsTableModel.addRow(new Object[]{instances.get(i).toString(0), instances.get(i).toString(1), instances.get(i).toString(2), instances.get(i).toString(3), Double.NaN, Double.NaN, instances.get(i).toString(6)});
                                     } else {
                                         overallMetricsTableModel.addRow(new Object[]{instances.get(i).toString(0), instances.get(i).toString(1), instances.get(i).toString(2), instances.get(i).toString(3), Double.NaN, instances.get(i).toString(5), instances.get(i).toString(6)});
-                                        
+
                                     }
                                 } else if (instances.get(i).toString(5).equals("?")) {
                                     overallMetricsTableModel.addRow(new Object[]{instances.get(i).toString(0), instances.get(i).toString(1), instances.get(i).toString(2), instances.get(i).toString(3), instances.get(i).toString(4), Double.NaN, instances.get(i).toString(6)});
                                 }
                             }
-                            
+
                         } catch (Exception ex) {
                             java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        
-                       // System.out.println("ehfefhe");
+
+                        // System.out.println("ehfefhe");
                     }
-                    
+
                 }
                 BufferedReader obj = null;
                 //TARGETS
                 try {
-                    obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() +"/Targets"));
+                    obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Targets"));
                     String strng;
                     while ((strng = obj.readLine()) != null) {
                         //System.out.println(strng);
-                        
+
                         String[] parts = strng.split(",");
                         String part1 = parts[0];
                         targets.add(new Attribute(part1, (ArrayList<String>) null));
-                       // System.out.println("parte 1--> " + part1);
+                        // System.out.println("parte 1--> " + part1);
                         String part2 = parts[1];
                         tablaTargetModel.addRow(new Object[]{part1, part2});
                     }
@@ -3943,43 +3940,41 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile()+ "/Variables"));
+                obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Variables"));
                 String strng;
                 while ((strng = obj.readLine()) != null) {
                     //System.out.println(strng);
                     listVariables.setModel(modeloLista);
                     modeloLista.addElement(strng);
                 }
-               
-                        //INPUT VARIABLES
-                        
-                        obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Input Variables"));
-                        while ((strng = obj.readLine()) != null) {
-                           // System.out.println("Input Variables");
-                           // System.out.println(strng);
-                            listaInputVariables.setModel(modeloInputVaribales);
-                            modeloInputVaribales.addElement(strng);
-                        }
-                        
-                                //SCAN STEP
-                                
-                                obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile()+  "/Scan Step"));
-                                while ((strng = obj.readLine()) != null) {
-                                    //System.out.println(strng);
-                                    if (strng.equals(radioButtonMaximum.getText())) {
-                                        radioButtonMaximum.setSelected(true);
-                                    } else if (strng.equals(radioButtonMinimum.getText())) {
-                                        radioButtonMinimum.setSelected(true);
-                                    } else {
-                                        String[] parts = strng.split(",");
-                                        String part1 = parts[0];
-                                        //System.out.println("parte 1--> " + part1);
-                                        String part2 = parts[1];
-                                        radioButtonValue.setSelected(true);
-                                        textFieldTimeSeries.setText(part2);
-                                    }
-                                }
-                                
+
+                //INPUT VARIABLES
+                obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Input Variables"));
+                while ((strng = obj.readLine()) != null) {
+                    // System.out.println("Input Variables");
+                    // System.out.println(strng);
+                    listaInputVariables.setModel(modeloInputVaribales);
+                    modeloInputVaribales.addElement(strng);
+                }
+
+                //SCAN STEP
+                obj = new BufferedReader(new FileReader(m_FileChooser.getSelectedFile() + "/Scan Step"));
+                while ((strng = obj.readLine()) != null) {
+                    //System.out.println(strng);
+                    if (strng.equals(radioButtonMaximum.getText())) {
+                        radioButtonMaximum.setSelected(true);
+                    } else if (strng.equals(radioButtonMinimum.getText())) {
+                        radioButtonMinimum.setSelected(true);
+                    } else {
+                        String[] parts = strng.split(",");
+                        String part1 = parts[0];
+                        //System.out.println("parte 1--> " + part1);
+                        String part2 = parts[1];
+                        radioButtonValue.setSelected(true);
+                        textFieldTimeSeries.setText(part2);
+                    }
+                }
+
             } catch (FileNotFoundException ex) {
                 java.util.logging.Logger.getLogger(tsStudio.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -4146,6 +4141,10 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         }
     }//GEN-LAST:event_loadDatasetConfigurationActionPerformed
 
+    private void fromToRadioButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromToRadioButtonMouseClicked
+        jRadioButton4.setEnabled(false);
+    }//GEN-LAST:event_fromToRadioButtonMouseClicked
+
     private void savePDFGraph() {
         String initialDir = ExplorerDefaults.getInitialDirectory();
         JFileChooser fileChooser = new JFileChooser(new File(initialDir));
@@ -4262,7 +4261,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 //System.out.println("Horizon: " + horizon.get(i));
             }
         }
-        
+
         prepositionalInstances = ts.nuevo(listInstances, mHorizon, horizon, lag * (-1), targets, timeFormatComboBox.getSelectedItem().toString(), listFeatures, variableComboFunctionFeature.getSelectedItem().toString(), nombreCustomFeature);
 
         //System.out.println("Numero instancias: " + listInstances.get(0).numInstances());
@@ -4384,7 +4383,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             //System.out.println("ListPrepositionalInstances-->: " + listaPrepositionalInstances.get(0));
        //final }
          */
-       // System.out.println("Llega hasta aqui");
+        // System.out.println("Llega hasta aqui");
         int contadorTargetGeneral = 0;
 
         List<List<List<List>>> maeByHorizon = new ArrayList();
@@ -4507,7 +4506,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     for (int i = 0; i < datasetsSinFecha.get(0).numAttributes(); i++) {
                         if (datasetsSinFecha.get(m).attribute(i).name().contains("ahead")) {
 
-                           // System.out.println("\\\\\\\\\\ " + datasetsSinFecha.get(m).attribute(i).name().replaceAll("_ahead", ""));
+                            // System.out.println("\\\\\\\\\\ " + datasetsSinFecha.get(m).attribute(i).name().replaceAll("_ahead", ""));
                             datasetsSinFecha.get(m).setClassIndex(i);
                             targets.add(datasetsSinFecha.get(m).attribute(i).name().replaceAll("_ahead", ""));
                             contadorHorizon++;
@@ -4516,15 +4515,114 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                             executor = Executors.newFixedThreadPool(numThreads);
 
                             Classifier cls = (Classifier) listClassifier.get(z);
-                           // System.out.println("JUSTO ANTES DEL CONCURRENTEXP");
+                            // System.out.println("JUSTO ANTES DEL CONCURRENTEXP");
 
                             if (eleccion == 0) {
                                 if (eleccionTrainingIncrement == 0) {
                                     concurrentExp = new LinkedList<>();
                                     //System.out.println("OPCION CON TRAINING INCREMENT");
                                     for (int per = Integer.parseInt(absoluteTextField.getText()); per < datasetsSinFecha.get(m).numInstances(); per = per + Integer.parseInt(trainingIncrementTextField.getText())) {
-                                       // System.out.println("per--> " + per);
+                                        // System.out.println("per--> " + per);
                                         concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, per, eleccion, 50, 0, 0, Integer.parseInt(trainingIncrementTextField.getText()), 1));
+                                    }
+                                    //System.out.println("Vuelve al run principal");
+                                    res = executor.invokeAll(concurrentExp);
+                                    //System.out.println("Res.size()--> " + res.size());
+                                    //System.out.println("Hace el executor");
+                                    for (int resSize = 0; resSize < res.size(); resSize++) {
+                                       // System.out.println("--- " + res.get(resSize));
+                                        //Hacert lista para guardar los objectResults
+                                        Future<ResultsExp> objectResult = res.get(resSize);
+                                       // System.out.println("Classifier--> " + getSpec(objectResult.get().getClassifier()));
+                                        classifiersPrint.add(getSpec(objectResult.get().getClassifier()));
+                                       // System.out.println("classifierPrint.size()--> " + classifiersPrint.size());
+                                        Evaluation evalResult = objectResult.get().getEvalClassifier();
+                                        mae.add(evalResult.meanAbsoluteError());
+                                        // System.out.println("MAE NORMAL--> " + mae);
+                                       //  System.out.println("contadorTarget--> " + contadorTarget);
+                                       // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                        //en el maebyhorizon falla
+                                        //maeByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.meanAbsoluteError());
+                                        maeTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).add(evalResult.meanAbsoluteError());
+
+                                        //System.out.println("M--> "+maeByHorizon.get(m).get(z).get(contadorTarget));
+                                        //System.out.println("MaeTrainingIncrement--> " + maeTrainingIncrement);
+                                        RMSE.add(evalResult.rootMeanSquaredError());
+                                        // System.out.println("RMSE Normal--> " + RMSE);
+                                        // System.out.println("pasa el rmse");
+                                        rmseTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).add(evalResult.rootMeanSquaredError());
+                                        // System.out.println("pasa el rmseByHorizon");
+                                        //System.out.println("RMSETrainingIncrement--> " + rmseTrainingIncrement);
+                                        R2.add(evalResult.correlationCoefficient());
+                                        r2TrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).add(evalResult.correlationCoefficient());
+                                        valuesPredictGeneral.get(m).get(z).get(contadorTarget).add(evalResult.predictions());
+                                        valuesPredictTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).add(evalResult.predictions());
+                                        //System.out.println("valuesPredictTrainingIncrement--> " + valuesPredictTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).size());
+                                        //System.out.println("valuesPredictTrainingIncrement--> " + valuesPredictTrainingIncrement.get(m).get(z).get(contadorTarget).size());
+                                        //System.out.println("valuesPredictTrainingIncrement--> " + valuesPredictTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).get(0).size());
+                                        //System.out.println("valuesPredictTrainingIncrement--> " + valuesPredictTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1));
+
+                                        //System.out.println("valuesPredictGeneral--> " + valuesPredictGeneral);
+                                        //System.out.println("contadorTarget--> " + contadorTarget);
+                                        //System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                        valuesPredict.add(evalResult.predictions());
+                                       // System.out.println("valuesPredict--> " + valuesPredict);
+                                    }
+                                    if (contadorHorizon == horizon.get(contadorTarget)) {
+                                        contadorTarget++;
+                                        contadorHorizon = 0;
+                                    }
+                                    contadorTargetGeneral = contadorTarget;
+
+                                   // System.out.println("contadorObject--> " + contadorObject);
+                                    contadorObject++;
+                                } else {
+                                    concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, Integer.parseInt(absoluteTextField.getText()), eleccion, 50, 0, 0, 0, eleccionTrainingIncrement));
+                                    res = executor.invokeAll(concurrentExp);
+                                    //System.out.println("Res.size()--> " + res.size());
+                                    //System.out.println("Hace el executor");
+
+                                    // System.out.println("--- " + res.get(contadorObject));
+                                    //Hacert lista para guardar los objectResults
+                                    Future<ResultsExp> objectResult = res.get(contadorObject);
+                                    // System.out.println("Classifier--> " + getSpec(objectResult.get().getClassifier()));
+                                    // System.out.println("pruebaSout");
+                                    classifiersPrint.add(getSpec(objectResult.get().getClassifier()));
+
+                                    Evaluation evalResult = objectResult.get().getEvalClassifier();
+                                    mae.add(evalResult.meanAbsoluteError());
+                                    // System.out.println("pasa el mae");
+                                    // System.out.println("contadorTarget--> " + contadorTarget);
+                                    // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                    //en el maebyhorizon falla
+                                    maeByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.meanAbsoluteError());
+                                    //System.out.println("MaeByHorizon--> " + maeByHorizon);
+                                    // System.out.println("1");
+                                    RMSE.add(evalResult.rootMeanSquaredError());
+                                    // System.out.println("pasa el rmse");
+                                    rmseByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.rootMeanSquaredError());
+                                    // System.out.println("pasa el rmseByHorizon");
+                                    // System.out.println("2");
+                                    R2.add(evalResult.correlationCoefficient());
+                                    r2ByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.correlationCoefficient());
+                                    valuesPredictGeneral.get(m).get(z).get(contadorTarget).add(evalResult.predictions());
+                                    // System.out.println("contadorTarget--> " + contadorTarget);
+                                    // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                    if (contadorHorizon == horizon.get(contadorTarget)) {
+                                        contadorTarget++;
+                                        contadorHorizon = 0;
+                                    }
+
+                                    valuesPredict.add(evalResult.predictions());
+                                    //System.out.println("valuePredict--> "+valuesPredict);
+                                    // System.out.println("contadorObject--> " + contadorObject);
+                                    contadorObject++;
+                                }
+                            } else if (eleccion == 1) {
+                                if (eleccionTrainingIncrement == 0) {
+                                    for (int per = (int) Math.round(datasetsSinFecha.get(m).numInstances() * Integer.parseInt(relativeTextField.getText()) / 100); per < datasetsSinFecha.get(m).numInstances(); per = per + Integer.parseInt(trainingIncrementTextField.getText())) {
+                                        concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, 25, eleccion, per, 0, 0, Integer.parseInt(trainingIncrementTextField.getText()), 1));
+                                        // System.out.println("per--> "+per);
                                     }
                                     //System.out.println("Vuelve al run principal");
                                     res = executor.invokeAll(concurrentExp);
@@ -4539,7 +4637,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                                         //System.out.println("classifierPrint.size()--> " + classifiersPrint.size());
                                         Evaluation evalResult = objectResult.get().getEvalClassifier();
                                         mae.add(evalResult.meanAbsoluteError());
-                                       // System.out.println("MAE NORMAL--> " + mae);
+                                        // System.out.println("MAE NORMAL--> " + mae);
                                         // System.out.println("contadorTarget--> " + contadorTarget);
                                         //System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
                                         //en el maebyhorizon falla
@@ -4548,9 +4646,8 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
                                         //System.out.println("M--> "+maeByHorizon.get(m).get(z).get(contadorTarget));
                                         //System.out.println("MaeTrainingIncrement--> " + maeTrainingIncrement);
-
                                         RMSE.add(evalResult.rootMeanSquaredError());
-                                       // System.out.println("RMSE Normal--> " + RMSE);
+                                        // System.out.println("RMSE Normal--> " + RMSE);
                                         // System.out.println("pasa el rmse");
                                         rmseTrainingIncrement.get(m).get(z).get(contadorTarget).get(contadorHorizon - 1).add(evalResult.rootMeanSquaredError());
                                         // System.out.println("pasa el rmseByHorizon");
@@ -4579,88 +4676,48 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                                     //System.out.println("contadorObject--> " + contadorObject);
                                     contadorObject++;
                                 } else {
-                                    concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, Integer.parseInt(absoluteTextField.getText()), eleccion, 50, 0, 0, 0, eleccionTrainingIncrement));
+
+                                    concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, 25, eleccion, Integer.parseInt(relativeTextField.getText()), 0, 0, 0, 0));
                                     res = executor.invokeAll(concurrentExp);
                                     //System.out.println("Res.size()--> " + res.size());
-                                    //System.out.println("Hace el executor");
+                                    // System.out.println("Hace el executor");
 
-                                   // System.out.println("--- " + res.get(contadorObject));
+                                    // System.out.println("--- " + res.get(contadorObject));
                                     //Hacert lista para guardar los objectResults
                                     Future<ResultsExp> objectResult = res.get(contadorObject);
-                                   // System.out.println("Classifier--> " + getSpec(objectResult.get().getClassifier()));
-                                   // System.out.println("pruebaSout");
+                                    // System.out.println("Classifier--> " + getSpec(objectResult.get().getClassifier()));
+                                    // System.out.println("pruebaSout");
                                     classifiersPrint.add(getSpec(objectResult.get().getClassifier()));
 
                                     Evaluation evalResult = objectResult.get().getEvalClassifier();
                                     mae.add(evalResult.meanAbsoluteError());
-                                   // System.out.println("pasa el mae");
-                                   // System.out.println("contadorTarget--> " + contadorTarget);
-                                   // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                    //System.out.println("pasa el mae");
+                                    //System.out.println("contadorTarget--> " + contadorTarget);
+                                    //System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
                                     //en el maebyhorizon falla
                                     maeByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.meanAbsoluteError());
                                     //System.out.println("MaeByHorizon--> " + maeByHorizon);
-                                   // System.out.println("1");
+                                    // System.out.println("1");
                                     RMSE.add(evalResult.rootMeanSquaredError());
-                                   // System.out.println("pasa el rmse");
+                                    // System.out.println("pasa el rmse");
                                     rmseByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.rootMeanSquaredError());
-                                   // System.out.println("pasa el rmseByHorizon");
-                                   // System.out.println("2");
+                                    // System.out.println("pasa el rmseByHorizon");
+                                    // System.out.println("2");
                                     R2.add(evalResult.correlationCoefficient());
                                     r2ByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.correlationCoefficient());
                                     valuesPredictGeneral.get(m).get(z).get(contadorTarget).add(evalResult.predictions());
-                                   // System.out.println("contadorTarget--> " + contadorTarget);
-                                   // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
+                                    //System.out.println("contadorTarget--> " + contadorTarget);
+                                    // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
                                     if (contadorHorizon == horizon.get(contadorTarget)) {
                                         contadorTarget++;
                                         contadorHorizon = 0;
                                     }
 
                                     valuesPredict.add(evalResult.predictions());
-                                    //System.out.println("valuePredict--> "+valuesPredict);
-                                   // System.out.println("contadorObject--> " + contadorObject);
+                                    //System.out.println("valuePredict--> " + valuesPredict);
+                                    //System.out.println("contadorObject--> " + contadorObject);
                                     contadorObject++;
                                 }
-                            } else if (eleccion == 1) {
-                                concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, 25, eleccion, Integer.parseInt(relativeTextField.getText()), 0, 0, 0, 0));
-                                res = executor.invokeAll(concurrentExp);
-                                //System.out.println("Res.size()--> " + res.size());
-                               // System.out.println("Hace el executor");
-
-                               // System.out.println("--- " + res.get(contadorObject));
-                                //Hacert lista para guardar los objectResults
-                                Future<ResultsExp> objectResult = res.get(contadorObject);
-                               // System.out.println("Classifier--> " + getSpec(objectResult.get().getClassifier()));
-                               // System.out.println("pruebaSout");
-                                classifiersPrint.add(getSpec(objectResult.get().getClassifier()));
-
-                                Evaluation evalResult = objectResult.get().getEvalClassifier();
-                                mae.add(evalResult.meanAbsoluteError());
-                                //System.out.println("pasa el mae");
-                                //System.out.println("contadorTarget--> " + contadorTarget);
-                                //System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
-                                //en el maebyhorizon falla
-                                maeByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.meanAbsoluteError());
-                                //System.out.println("MaeByHorizon--> " + maeByHorizon);
-                               // System.out.println("1");
-                                RMSE.add(evalResult.rootMeanSquaredError());
-                               // System.out.println("pasa el rmse");
-                                rmseByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.rootMeanSquaredError());
-                               // System.out.println("pasa el rmseByHorizon");
-                               // System.out.println("2");
-                                R2.add(evalResult.correlationCoefficient());
-                                r2ByHorizon.get(m).get(z).get(contadorTarget).add(evalResult.correlationCoefficient());
-                                valuesPredictGeneral.get(m).get(z).get(contadorTarget).add(evalResult.predictions());
-                                //System.out.println("contadorTarget--> " + contadorTarget);
-                               // System.out.println("ContadorHorizon--> " + contadorHorizon + "|| horizon.get(contadorTarget)--> " + horizon.get(contadorTarget));
-                                if (contadorHorizon == horizon.get(contadorTarget)) {
-                                    contadorTarget++;
-                                    contadorHorizon = 0;
-                                }
-
-                                valuesPredict.add(evalResult.predictions());
-                                //System.out.println("valuePredict--> " + valuesPredict);
-                                //System.out.println("contadorObject--> " + contadorObject);
-                                contadorObject++;
                             } else {
                                 concurrentExp.add(new FeatureClassifierAndValidations(datasetsSinFecha.get(m), progressExp, numThreads, m_log, cls, 25, eleccion, 50, indiceFechaFrom, indiceFechaTo, 0, 0));
 
@@ -4790,20 +4847,21 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             //System.out.println("Size valuePredict--> " + valuesPredict.size());
             //System.out.println("PRUEBA---> " + valuesPredict.get(0));
             // System.out.println(valuesPredict);
-
+           // System.out.println("FIN EXPERIMENT");
             executor.shutdown();
             //System.out.println("datasetsSinFechaInstances--> " + datasetsSinFecha.get(0).numInstances());
             progressExp.setValue(100);
             calculated = "calculated";
             experimentLabel.setText("<html><p style=\"width:100px\">" + "Name: " + newTextField.getText() + "<br> Datasets: " + listInstances.size() + "<br> Features: " + listFeatures.size() + "<br>  Classifiers: " + listClassifier.size() + "<br>  Validation: Absolute" + "<br> Result: " + calculated + "</p></html>");
 
-            System.out.println("Llega al 100%");
+            //System.out.println("Llega al 100%");
             runStopButton.setFocusPainted(false);
             runStopButton.setText("Run");
             prepositionalDatasets.addAll(datasetsSinFecha);
             fechasPrepositionalDatasets.addAll(fechasInstances);
             classifiersPrintGeneral.addAll(classifiersPrintByHorizon);
             if (eleccionTrainingIncrement == 0) {
+               // System.out.println("entra en grafica training increment");
                 printPredictionTrainingIncrementTable(valuesPredictTrainingIncrement, classifiersPrint, datasetsSinFecha.get(m), targets, fechasInstances, m, contadorTargetGeneral);
                 printOverallMetricsTrainingIncrementTable(maeTrainingIncrement, rmseTrainingIncrement, r2TrainingIncrement, valuesPredict, classifiersPrint, datasetsSinFecha.get(m), targets, fechasInstances, m, contadorTargetGeneral);
 
@@ -4923,84 +4981,136 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
 
     private void printPredictionTrainingIncrementTable(List<List<List<List<List<List<Prediction>>>>>> valuesPredict, List<String> classifiersPrint, Instances datasets, List<String> targets, List<List<String>> fechas, int m, int contadorTarget) throws ExecutionException, InterruptedException {
         //System.out.println("ValuesPredict.get(0).size()--> " + valuesPredict.get(0).size());
-        System.out.println("valuesPredict.size()--> " + valuesPredict.size());
+       // System.out.println("valuesPredict.size()--> " + valuesPredict.size());
         int contador = 0;
+        int indexFecha = 0;
         int relativeIndice = 0;
         if (eleccion == 1) {
-            relativeIndice = (datasets.numInstances() * Integer.parseInt(relativeTextField.getText())) / 100;
+            indexFecha = (int) Math.round(datasets.numInstances() * Integer.parseInt(relativeTextField.getText()) / 100);
             //System.out.println("indiceRelativo--> " + relativeIndice);
-        }
-        int c = 0;
-        int contadorFecha = 0;
-        int indexFecha = Integer.parseInt(absoluteTextField.getText());;
+            //System.out.println("classifier--> " + classifiersPrint);
+           // System.out.println("fechas.size---> " + fechas.get(m).size());
+            //System.out.println("fecha.get(m)--> " + fechas.get(m));
+           // System.out.println("targets--> " + targets);
+            int mitad = valuesPredict.size() / listClassifier.size();
+            for (int z = 0; z < listClassifier.size(); z++) {
+               // System.out.println("entra en classifier");
+                for (int t = 0; t < contadorTarget; t++) {
+                    for (int h = 0; h < horizon.get(t); h++) {
+                        //System.out.println("h--> " + h);
+                        for (int i = 0; i < valuesPredict.get(m).get(z).get(t).get(h).size(); i++) {
+                            //System.out.println("i--> " + i);
+                            for (int j = 0; j < valuesPredict.get(m).get(z).get(t).get(h).get(i).size(); j++) {
+                                // System.out.println(valuesPredict.get(m).get(z).get(t).get(h).get(i));
+                                predictionTableModel.addRow(new Object[]{getSpec(listClassifier.get(z)), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(t), horizon.get(t), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted(), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual(), (valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted() - valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual())});
+                                //System.out.println("termina");
+                            }
+                            // predictionTableModel.addRow(new Object[]{classifiersPrint.get(z), datasets.relationName(), fechas.get(m).get((indexFecha)), targets.get(t), 0, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
 
-        System.out.println("classifier--> " + classifiersPrint);
-        System.out.println("fechas.size---> " + fechas.get(m).size());
-        //System.out.println("fecha.get(m)--> " + fechas.get(m));
-        System.out.println("targets--> "+targets);
-        int mitad = valuesPredict.size() / listClassifier.size();
-        for (int z = 0; z < listClassifier.size(); z++) {
-            System.out.println("entra en classifier");
-            for (int t = 0; t < contadorTarget; t++) {
-                for (int h = 0; h < horizon.get(t); h++) {
-                    //System.out.println("h--> " + h);
-                    for (int i = 0; i < valuesPredict.get(m).get(z).get(t).get(h).size(); i++) {
-                        //System.out.println("i--> " + i);
-                        for (int j = 0; j < valuesPredict.get(m).get(z).get(t).get(h).get(i).size(); j++) {
-                           // System.out.println(valuesPredict.get(m).get(z).get(t).get(h).get(i));
-                            predictionTableModel.addRow(new Object[]{getSpec(listClassifier.get(z)), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(t), horizon.get(t), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted(), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual(), (valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted() - valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual())});
-                            //System.out.println("termina");
+                            //System.out.println("huhuhu");
                         }
-                        // predictionTableModel.addRow(new Object[]{classifiersPrint.get(z), datasets.relationName(), fechas.get(m).get((indexFecha)), targets.get(t), 0, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
-
-                        //System.out.println("huhuhu");
                     }
+                    //System.out.println("hohoho");
                 }
-                //System.out.println("hohoho");
+                // System.out.println("22222");
+
             }
-           // System.out.println("22222");
 
+            // if (eleccion == 0) {
+            //    indexFecha = Integer.parseInt(absoluteTextField.getText());
+            //} else if (eleccion == 1) {
+            //    indexFecha = relativeIndice;
+            // }
+            // c++;
+            // int horizons = horizon.get(contador);
+            //if (c == horizon.get(contador)) {
+            //   contador++;
+            //   if (contador == horizon.size()) {
+            //       contador = 0;
+            //   }
+            //   c = 0;
+            // }
+            // String cls = getSpec(listClassifier.get(0));
+            //System.out.println("ValuesPredict.get(i).size()--> " + valuesPredict.get(i).size());
+            // System.out.println("Llega justo antes del for");
+            // for (int j = 0; j < valuesPredict.get(i).size(); j++) {
+            //  predictionTableModel.addRow(new Object[]{classifiersPrint.get(i), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(0), horizons, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
+            //      System.out.println("i---> " + i);
+            // }
+        } else {
+            int c = 0;
+            int contadorFecha = 0;
+            indexFecha = Integer.parseInt(absoluteTextField.getText());;
+
+           // System.out.println("classifier--> " + classifiersPrint);
+           // System.out.println("fechas.size---> " + fechas.get(m).size());
+            //System.out.println("fecha.get(m)--> " + fechas.get(m));
+          //  System.out.println("targets--> " + targets);
+            int mitad = valuesPredict.size() / listClassifier.size();
+            for (int z = 0; z < listClassifier.size(); z++) {
+               // System.out.println("entra en classifier");
+                for (int t = 0; t < contadorTarget; t++) {
+                    for (int h = 0; h < horizon.get(t); h++) {
+                        //System.out.println("h--> " + h);
+                        for (int i = 0; i < valuesPredict.get(m).get(z).get(t).get(h).size(); i++) {
+                            //System.out.println("i--> " + i);
+                            for (int j = 0; j < valuesPredict.get(m).get(z).get(t).get(h).get(i).size(); j++) {
+                                // System.out.println(valuesPredict.get(m).get(z).get(t).get(h).get(i));
+                                predictionTableModel.addRow(new Object[]{getSpec(listClassifier.get(z)), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(t), horizon.get(t), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted(), valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual(), (valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).predicted() - valuesPredict.get(m).get(z).get(t).get(h).get(i).get(j).actual())});
+                                //System.out.println("termina");
+                            }
+                            // predictionTableModel.addRow(new Object[]{classifiersPrint.get(z), datasets.relationName(), fechas.get(m).get((indexFecha)), targets.get(t), 0, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
+
+                            //System.out.println("huhuhu");
+                        }
+                    }
+                    //System.out.println("hohoho");
+                }
+                // System.out.println("22222");
+
+            }
+
+            // if (eleccion == 0) {
+            //    indexFecha = Integer.parseInt(absoluteTextField.getText());
+            //} else if (eleccion == 1) {
+            //    indexFecha = relativeIndice;
+            // }
+            // c++;
+            // int horizons = horizon.get(contador);
+            //if (c == horizon.get(contador)) {
+            //   contador++;
+            //   if (contador == horizon.size()) {
+            //       contador = 0;
+            //   }
+            //   c = 0;
+            // }
+            // String cls = getSpec(listClassifier.get(0));
+            //System.out.println("ValuesPredict.get(i).size()--> " + valuesPredict.get(i).size());
+            // System.out.println("Llega justo antes del for");
+            // for (int j = 0; j < valuesPredict.get(i).size(); j++) {
+            //  predictionTableModel.addRow(new Object[]{classifiersPrint.get(i), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(0), horizons, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
+            //      System.out.println("i---> " + i);
+            // }
         }
-
-        // if (eleccion == 0) {
-        //    indexFecha = Integer.parseInt(absoluteTextField.getText());
-        //} else if (eleccion == 1) {
-        //    indexFecha = relativeIndice;
-        // }
-        // c++;
-        // int horizons = horizon.get(contador);
-        //if (c == horizon.get(contador)) {
-        //   contador++;
-        //   if (contador == horizon.size()) {
-        //       contador = 0;
-        //   }
-        //   c = 0;
-        // }
-        // String cls = getSpec(listClassifier.get(0));
-        //System.out.println("ValuesPredict.get(i).size()--> " + valuesPredict.get(i).size());
-        // System.out.println("Llega justo antes del for");
-        // for (int j = 0; j < valuesPredict.get(i).size(); j++) {
-        //  predictionTableModel.addRow(new Object[]{classifiersPrint.get(i), datasets.relationName(), fechas.get(m).get((indexFecha + j)), targets.get(0), horizons, valuesPredict.get(i).get(j).predicted(), valuesPredict.get(i).get(j).actual(), (valuesPredict.get(i).get(j).predicted() - valuesPredict.get(i).get(j).actual())});
-        //      System.out.println("i---> " + i);
-        // }
         System.out.println("Termina el prediction Table");
+
     }
 
     private void printPredictionTable(List<List<Prediction>> valuesPredict, List<String> classifiersPrint, Instances datasets, List<String> targets, List<List<String>> fechas, int m) throws ExecutionException, InterruptedException {
-       // System.out.println("ValuesPredict.get(0).size()--> " + valuesPredict.get(0).size());
-       // System.out.println("valuesPredict.size()--> " + valuesPredict.size());
+        // System.out.println("ValuesPredict.get(0).size()--> " + valuesPredict.get(0).size());
+        // System.out.println("valuesPredict.size()--> " + valuesPredict.size());
         int contador = 0;
         int relativeIndice = 0;
         if (eleccion == 1) {
             relativeIndice = (datasets.numInstances() * Integer.parseInt(relativeTextField.getText())) / 100;
-           // System.out.println("indiceRelativo--> " + relativeIndice);
+            // System.out.println("indiceRelativo--> " + relativeIndice);
         }
         int c = 0;
         int contadorFecha = 0;
         int indexFecha = 0;
         //System.out.println("classifier--> " + classifiersPrint);
         System.out.println("fechas.size---> " + fechas.get(m).size());
-       // System.out.println("fecha.get(m)--> " + fechas.get(m));
+        // System.out.println("fecha.get(m)--> " + fechas.get(m));
         //System.out.println(targets);
         int mitad = valuesPredict.size() / listClassifier.size();
         for (int i = 0; i < valuesPredict.size(); i++) {
@@ -5103,9 +5213,9 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             System.out.println("entra en classifier");
             for (int t = 0; t < contadorTarget; t++) {
                 for (int h = 0; h < horizon.get(t); h++) {
-                    System.out.println("h--> " + h);
+                   // System.out.println("h--> " + h);
                     for (int i = 0; i < mae.get(m).get(z).get(t).get(h).size(); i++) {
-                        System.out.println("i--> " + i);
+                       // System.out.println("i--> " + i);
                         //System.out.println("MAE--> " + mae.get(m).get(z).get(t).get(h).get(i));
                         overallMetricsTableModel.addRow(new Object[]{getSpec(listClassifier.get(z)), datasets.relationName(), mae.get(m).get(z).get(t).get(h).get(i), RMSE.get(m).get(z).get(t).get(h).get(i), mape.get(i), smape.get(i), R2.get(m).get(z).get(t).get(h).get(i)});
                     }
@@ -5197,7 +5307,6 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             }
 
             //System.out.println("Date--> " + date);
-
             for (int i = 0; i < fechas.get(0).size(); i++) {
                 fechaPrueba.add((fechas.get(0).get(i)));
             }
@@ -5206,7 +5315,6 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(0));
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).size());
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(1).size());
-
             // System.out.println("|1|--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(0));
             //System.out.println("|2|-->" + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon));
             //fechas.get(indexDataset).size();
@@ -5337,13 +5445,13 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 date.add(aux);
             }
 
-            System.out.println("Date--> " + date);
+            //System.out.println("Date--> " + date);
 
             for (int i = 0; i < fechas.get(0).size(); i++) {
                 fechaPrueba.add((fechas.get(0).get(i)));
             }
 
-            System.out.println("fechaPrueba--> " + fechaPrueba);
+           // System.out.println("fechaPrueba--> " + fechaPrueba);
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(0));
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).size());
             //System.out.println("||--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(1).size());
@@ -5351,7 +5459,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             // System.out.println("|1|--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(0));
             //System.out.println("|2|-->" + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon));
             //fechas.get(indexDataset).size();
-            System.out.println("size valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon)--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).size());
+           // System.out.println("size valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon)--> " + valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).size());
             for (int k = 0; k < valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).size(); k++) {
                 for (int j = 0; j < valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).size(); j++) {
 
@@ -5362,11 +5470,21 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     //int año = Integer.parseInt(g[0]);
                     //System.out.println("Dia/Mes/Año: " + dia + "/" + mes + "/" + año);
                     //ts.add(new Day(dia, mes, año),valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
+                    if(eleccion == 0){
                     if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
                         ts1.add(new Hour(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).actual());
                     } else {
                         ts1.add(new Day(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).actual());
 
+                    }
+                    }
+                    else{
+                      if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
+                        ts1.add(new Hour(date.get(indexDataset).get(k + (int) Math.round(prepositionalDatasets.get(indexDataset).numInstances() * Integer.parseInt(relativeTextField.getText()) / 100))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).actual());
+                    } else {
+                        ts1.add(new Day(date.get(indexDataset).get(k + (int) Math.round(prepositionalDatasets.get(indexDataset).numInstances() * Integer.parseInt(relativeTextField.getText()) / 100))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).actual());
+
+                    }  
                     }
                     //System.out.println("k-> " + k);
                 }
@@ -5382,11 +5500,21 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                     //int año = Integer.parseInt(g[0]);
                     //System.out.println("Dia/Mes/Año: " + dia + "/" + mes + "/" + año);
                     //ts.add(new Day(dia, mes, año),valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
+                    if(eleccion == 0){
                     if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
                         ts2.add(new Hour(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).predicted());
                     } else {
                         ts2.add(new Day(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).predicted());
 
+                    }
+                    }
+                    else{
+                       if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
+                        ts2.add(new Hour(date.get(indexDataset).get(k + (int) Math.round(prepositionalDatasets.get(indexDataset).numInstances() * Integer.parseInt(relativeTextField.getText()) / 100))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).predicted());
+                    } else {
+                        ts2.add(new Day(date.get(indexDataset).get(k + (int) Math.round(prepositionalDatasets.get(indexDataset).numInstances() * Integer.parseInt(relativeTextField.getText()) / 100))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).get(j).predicted());
+
+                    }   
                     }
                     //System.out.println("k-> " + k);
                 }
@@ -5496,7 +5624,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
         } else {
             metric = rmseGeneralTrainingIncrement;
         }
-        System.out.println("METRIC---> " + metricsComboBox.getSelectedItem());
+       // System.out.println("METRIC---> " + metricsComboBox.getSelectedItem());
         System.out.println("ENTRA A LA PRUEBA TRAINING INCREMENT");
         if (m != 2) {
             System.out.println("Target vacio");
@@ -5511,7 +5639,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             System.out.println("Entra en el item state changed");
             int indexTarget = targetComboBox.getSelectedIndex();
             int indexDataset = datasetComboBox.getSelectedIndex();
-            System.out.println("indexDataset--> " + indexDataset);
+         //   System.out.println("indexDataset--> " + indexDataset);
             double suma = 0;
             double numeroH = 0;
             //POR DEFECTO APARECE EL PRIMER TARGET
@@ -5522,8 +5650,8 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
             //Una vez metidas todas las columnas de horizontes, se crea la de average.
             metricsByHorizonTableModel.addColumn("Average");
             //System.out.println("mae.get(0).size()--> " + metric.get(0).size());
-            System.out.println("maeGeneralTrainingIncrement--> " + maeGeneralTrainingIncrement);
-            System.out.println("class-->" + classifiersPrintGeneral);
+           // System.out.println("maeGeneralTrainingIncrement--> " + maeGeneralTrainingIncrement);
+          //  System.out.println("class-->" + classifiersPrintGeneral);
             int columnCount = metricsByHorizonTableModel.getColumnCount();
             for (int i = 0; i < classifiersPrintGeneral.get(0).size(); i++) {
                 for (int k = 0; k < metric.get(indexDataset).get(i).get(indexTarget).get(0).size(); k++) {
@@ -5533,7 +5661,7 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                         if (j == 0) {
                             fila[j] = classifiersPrintGeneral.get(indexTarget).get(i);
                         } else if (columnCount - j != 1) {
-                            System.out.println("||--> " + metric.get(indexDataset).get(i).get(indexTarget).get((j - 1)).get(k));
+                           // System.out.println("||--> " + metric.get(indexDataset).get(i).get(indexTarget).get((j - 1)).get(k));
                             fila[j] = metric.get(indexDataset).get(i).get(indexTarget).get((j - 1)).get(k);
                             suma = suma + Double.parseDouble(metric.get(indexDataset).get(i).get(indexTarget).get((j - 1)).get(k).toString());
                         } else {

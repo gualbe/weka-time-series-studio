@@ -87,14 +87,14 @@ public class FeatureClassifierAndValidations implements Callable<ResultsExp> {
 
     public ResultsExp run() throws Exception {
         // Collection c = null;
-        System.out.println("Entra en el RESULTS EXP A TOPE");
+        //System.out.println("Entra en el RESULTS EXP A TOPE");
         Instances train = null, newTrain, test = null, newTest = null;
-
+        
         Classifier cls = null;
-
+        System.out.println("--> "+datasets.numInstances());
         try {
             cls = AbstractClassifier.makeCopy(classifier);
-            System.out.println("Pasa el cls");
+           // System.out.println("Pasa el cls");
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(FeatureClassifierAndValidations.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,51 +110,67 @@ public class FeatureClassifierAndValidations implements Callable<ResultsExp> {
             testSize = Math.abs(datasets.numInstances() - trainSize);
             train = new Instances(datasets, 0, trainSize);
             test = new Instances(datasets, percent, testSize);
-            System.out.println("ELECCION ABSOLUTA");
+           // System.out.println("ELECCION ABSOLUTA");
             }
             else{
             trainSize = percent;
-            testSize = trainingIncrement;
+            testSize = 1;
             train = new Instances(datasets, 0, trainSize);
             test = new Instances(datasets, percent, testSize);
-            System.out.println("ELECCION ABSOLUTA CON TRAINING INCREMENET");
-            System.out.println("TRAIN SIZE--> "+trainSize);
+           // System.out.println("ELECCION ABSOLUTA CON TRAINING INCREMENET");
+           // System.out.println("TRAIN SIZE--> "+trainSize);
+           // System.out.println("TOTAL SIZE--> "+(testSize+trainSize));
             }
 
         } else if (eleccion == 1) {
+            if(eleccionTrainingIncrement == 0){
             trainSize = (int) Math.round(datasets.numInstances() * percent2 / 100);
-            System.out.println("trainSize--> " + trainSize);
+           // System.out.println("trainSize--> " + trainSize);
             testSize = datasets.numInstances() - trainSize;
             train = new Instances(datasets, 0, trainSize);
             test = new Instances(datasets, trainSize, testSize);
-            System.out.println("ELECCION RELATIVA");
+           // System.out.println("ELECCION RELATIVA");
+            }
+            else{
+            trainSize = percent2;
+            testSize = 1;
+            train = new Instances(datasets, 0, trainSize);
+            test = new Instances(datasets, trainSize, testSize);
+           // System.out.println("ELECCION RELATIVA CON TRAINING INCREMENET");
+           // System.out.println("TRAIN SIZE--> "+trainSize);
+            
+            }
         } else {
             testSize = Math.abs(datasets.numInstances() - fechaTo);
             train = new Instances(datasets, fechaFrom, fechaTo);
             test = new Instances(datasets, fechaTo, testSize);
-            System.out.println("ELECCION FECHA");
+           // System.out.println("ELECCION FECHA");
 
         }
-
+        
+        
         newTrain = train;
         newTest = test;
-        System.out.println("Antes del build");
+       // System.out.println("Antes del build");
         cls.buildClassifier(newTrain);
-        System.out.println("Despues del build");
+       // System.out.println("Despues del build");
         eval = new Evaluation(newTrain);
         eval.evaluateModel(cls, newTest);
 
         numAttr = newTest.numAttributes();
 
         ResultsExp result = new ResultsExp(eval, newTest, datasets, classifier, numAttr);
-
+        
         synchronized (progressBar) {
             progressBar.setValue(progressBar.getValue() + numThreads);
         }
-        System.out.println("Termina el resultsExp");
-        return result;
+       // System.out.println("Termina el resultsExp");
+        
 
+    
+        return result;
     }
+
 
     @Override
     public ResultsExp call() throws Exception {
