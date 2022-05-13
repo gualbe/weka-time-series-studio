@@ -1,7 +1,9 @@
 # Weka Time Series Studio
 ## A complete tool of time series forecasting analysis for Weka Explorer
 
-New graphical user interface specifically designed to perform time series forecasting analysis experiments in Weka Explorer allowing parallel computation. Predicted and actual values are produced in an exportable table, including a vast set of validation types. Moreover, an exportable table of evaluation metrics are also produced, in addition to a customizable line plot.
+New graphical user interface specifically designed to perform time series forecasting multi-dataset multi-horizon multi-algorithm analysis in Weka Explorer allowing parallel computation. Predicted and actual values are produced in an exportable table, including a vast set of validation types. Moreover, an exportable table of evaluation metrics are also produced, in addition to a customizable line plot.
+
+Weka Time Series Studio allows the user to design its own features (feature engineering) based on formulas and predefined functions, along with the desired lagged variables.
 
 Developed by: **Manuel Molina Fuentes** (for his final degree work)
 
