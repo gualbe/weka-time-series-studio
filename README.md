@@ -25,13 +25,13 @@ https://github.com/gualbe/weka-time-series-studio/raw/main/TS-Studio-Manual.pdf
 
 ## Screenshots
 
-The Experiment panel:
+The Datasets panel:
 
-![Experiment panel](screenshots/fsstudio1.jpg)
+<img src="screenshots/datasets.png" alt="drawing" width="700"/>
 
-The Results panel:
+The Feature Engineering panel:
 
-![Results panel](screenshots/fsstudio2.jpg)
+<img src="screenshots/features.png" alt="drawing" width="700"/>
 
 ## Contact
 
