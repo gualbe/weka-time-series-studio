@@ -5330,7 +5330,12 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 //System.out.println("Dia/Mes/Año: " + dia + "/" + mes + "/" + año);
                 //ts.add(new Day(dia, mes, año),valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
                 if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
+                    if(eleccion==1){
+                    ts1.add(new Hour(date.get(indexDataset).get(k + relative)), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
+                    }
+                    else{
                     ts1.add(new Hour(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
+                    }
                 } else {
                     if (eleccion == 0) {
                         ts1.add(new Day(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
@@ -5354,8 +5359,12 @@ public class tsStudio extends javax.swing.JPanel implements Explorer.ExplorerPan
                 //System.out.println("Dia/Mes/Año: " + dia + "/" + mes + "/" + año);
                 //ts.add(new Day(dia, mes, año),valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).actual());
                 if (timeFormatComboBox.getSelectedItem().toString().contains("HH")) {
+                    if(eleccion==1){
+                    ts2.add(new Hour(date.get(indexDataset).get(k + relative)), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).predicted());
+                    }
+                    else{
                     ts2.add(new Hour(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).predicted());
-                } else {
+                    }                } else {
                     if (eleccion == 0) {
                         ts2.add(new Day(date.get(indexDataset).get(k + (Integer.parseInt(absoluteTextField.getText())))), valuesPredict.get(indexDataset).get(indexClassifier).get(indexTarget).get(indexHorizon).get(k).predicted());
                     } else {
